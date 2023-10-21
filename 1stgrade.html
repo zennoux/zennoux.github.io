@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>1st Grade</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 50%;
+            margin: 0 auto;
+            text-align: center;
+            padding: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #results {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>1st Grade</h1>
+        <form>
+            <label for="LNF">LNF:</label>
+            <input type="number" id="LNF" name="LNF">
+            <label for="PSF">PSF:</label>
+            <input type="number" id="PSF" name="PSF">
+            <label for="NWF-CLS">NWF-CLS:</label>
+            <input type="number" id="NWF-CLS" name="NWF-CLS">
+            <label for="NWF-WRC">NWF-WRC:</label>
+            <input type="number" id="NWF-WRC" name="NWF-WRC">
+            <label for="WRF">WRF:</label>
+            <input type="number" id="WRF" name="WRF">
+            <label for="ORF-WRC">ORF-WRC:</label>
+            <input type="number" id="ORF-WRC" name="ORF-WRC">
+            <label for="ORF-ACC">ORF-ACC:</label>
+            <input type="number" id="ORF-ACC" name="ORF-ACC">
+            <button type="button" id="calculate">Calculate</button>
+        </form>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        document.getElementById("calculate").addEventListener("click", function() {
+            const LNF = parseFloat(document.getElementById("LNF").value);
+            const PSF = parseFloat(document.getElementById("PSF").value);
+            const NWFCLS = parseFloat(document.getElementById("NWF-CLS").value);
+            const NWFWRC = parseFloat(document.getElementById("NWF-WRC").value);
+            const WRF = parseFloat(document.getElementById("WRF").value);
+            const ORFWRC = parseFloat(document.getElementById("ORF-WRC").value);
+            const ORFACC = parseFloat(document.getElementById("ORF-ACC").value);
+
+            if (!isNaN(LNF) && !isNaN(PSF) && !isNaN(NWFCLS) && !isNaN(NWFWRC) && !isNaN(WRF) && !isNaN(ORFWRC) && !isNaN(ORFACC)) {
+                const step1 = {
+                    LNF: LNF * 10.72,
+                    PSF: PSF * 2.13,
+                    NWFCLS: NWFCLS * 23.13,
+                    NWFWRC: NWFWRC * 7.79,
+                    WRF: WRF * 13.51,
+                    ORFWRC: ORFWRC * 25.36,
+                    ORFACC: ORFACC * 0.25
+                };
+
+                const step2 = Object.values(step1).reduce((sum, value) => sum + value, 0);
+                const step3 = step2 - 3371;
+                const step4 = step3 / 2251;
+                const step5 = Math.round(step4 * 40);
+                const step6a = step5 + 360;
+                const step6b = step5 + 400;
+                const step6c = step5 + 440;
+
+                const resultHTML = `
+                    <h2>Step 1</h2>
+                    <p>LNF: ${step1.LNF}</p>
+                    <p>PSF: ${step1.PSF}</p>
+                    <p>NWF-CLS: ${step1.NWFCLS}</p>
+                    <p>NWF-WRC: ${step1.NWFWRC}</p>
+                    <p>WRF: ${step1.WRF}</p>
+                    <p>ORF-WRC: ${step1.ORFWRC}</p>
+                    <p>ORF-ACC: ${step1.ORFACC}</p>
+                    <h2>Step 2</h2>
+                    <p>Total Sum of Step 1: ${step2}</p>
+                    <h2>Step 3</h2>
+                    <p>Step 2 Sum Minus 3371: ${step3}</p>
+                    <h2>Step 4</h2>
+                    <p>Step 3 Result Divided by 2251: ${step4}</p>
+                    <h2>Step 5</h2>
+                    <p>Step 4 Result Multiplied by 40 and Rounded: ${step5}</p>
+                    <h2>Step 6</h2>
+                    <p>Beginning Final Composite Score: ${step6a}</p>
+                    <p>Middle Final Composite Score: ${step6b}</p>
+                    <p>End Final Composite Score: ${step6c}</p>
+                `;
+                document.getElementById("results").innerHTML = resultHTML;
+            } else {
+                document.getElementById("results").innerHTML = "<p>Please enter valid numbers for all fields.</p>";
+            }
+        });
+    </script>
+</body>
+</html>
