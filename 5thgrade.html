@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>5th Grade</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 50%;
+            margin: 0 auto;
+            text-align: center;
+            padding: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #results {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>5th Grade</h1>
+        <form>
+            <label for="ORF-WRC">ORF-WRC:</label>
+            <input type="number" id="ORF-WRC" name="ORF-WRC">
+            <label for="ORF-ACC">ORF-ACC:</label>
+            <input type="number" id="ORF-ACC" name="ORF-ACC">
+            <label for="Maze">Maze:</label>
+            <input type="number" id="Maze" name="Maze">
+            <button type="button" id="calculate">Calculate</button>
+        </form>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        document.getElementById("calculate").addEventListener("click", function() {
+            const ORFWRC = parseFloat(document.getElementById("ORF-WRC").value);
+            const ORFACC = parseFloat(document.getElementById("ORF-ACC").value);
+            const Maze = parseFloat(document.getElementById("Maze").value);
+
+            if (!isNaN(ORFWRC) && !isNaN(ORFACC) && !isNaN(Maze)) {
+                const step1 = {
+                    ORFWRC: ORFWRC * 31.12,
+                    ORFACC: ORFACC * 0.03,
+                    Maze: Maze * 4.58
+                };
+
+                const step2 = Object.values(step1).reduce((sum, value) => sum + value, 0);
+                const step3 = step2 - 4085;
+                const step4 = step3 / 1299;
+                const step5 = Math.round(step4 * 40);
+                const step6a = step5 + 360;
+                const step6b = step5 + 400;
+                const step6c = step5 + 440;
+
+                const resultHTML = `
+                    <h2>Step 1</h2>
+                    <p>ORF-WRC: ${step1.ORFWRC}</p>
+                    <p>ORF-ACC: ${step1.ORFACC}</p>
+                    <p>Maze: ${step1.Maze}</p>
+                    <h2>Step 2</h2>
+                    <p>Total Sum of Step 1: ${step2}</p>
+                    <h2>Step 3</h2>
+                    <p>Step 2 Sum Minus 4085: ${step3}</p>
+                    <h2>Step 4</h2>
+                    <p>Step 3 Result Divided by 1299: ${step4}</p>
+                    <h2>Step 5</h2>
+                    <p>Step 4 Result Multiplied by 40 and Rounded: ${step5}</p>
+                    <h2>Step 6</h2>
+                    <p>Beginning Final Composite Score: ${step6a}</p>
+                    <p>Middle Final Composite Score: ${step6b}</p>
+                    <p>End Final Composite Score: ${step6c}</p>
+                `;
+                document.getElementById("results").innerHTML = resultHTML;
+            } else {
+                document.getElementById("results").innerHTML = "<p>Please enter valid numbers for all fields.</p>";
+            }
+        });
+    </script>
+</body>
+</html>
